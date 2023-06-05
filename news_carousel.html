@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>News Carousel</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+    }
+
+    .section-heading {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .carousel-container {
+      overflow-x: auto; 
+      overflow-y: hidden; 
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch; 
+    }
+
+    .carousel {
+      display: inline-block;
+    }
+
+    .news {
+      width: 300px;
+      height: 400px;
+      background-color: #fff;
+      margin-right: 10px;
+      display: inline-block;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+      overflow: hidden; /* Prevent headline text overflow */
+    }
+
+    .news:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 50%;
+      object-fit: cover;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border: none; /* Remove the white boundary */
+    }
+
+    .news-headline {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  line-height: 1.2em;
+  max-height: 3.6em; /* 1.2em (line height) * 3 (line clamp) */
+}
+
+
+    .news-meta {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+
+    .news-views {
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="section-heading">Trending</h1>
+
+  <div class="carousel-container">
+    <div class="carousel">
+      <div class="news">
+        <img class="news-image" src="/news1.jpeg" alt="News 1 Image">
+        <h2 class="news-headline">Breaking News 1</h2>
+        <div class="news-meta">Published: June 1, 2023</div>
+        <div class="news-views">Views: 1000</div>
+      </div>
+      <div class="news">
+        <img class="news-image" src="/news1.jpeg" alt="News 2 Image">
+        <h2 class="news-headline">Breaking News 2</h2>
+        <div class="news-meta">Published: June 2, 2023</div>
+        <div class="news-views">Views: 1500</div>
+      </div>
+      <div class="news">
+        <img class="news-image" src="/news1.jpeg" alt="News 3 Image">
+        <h2 class="news-headline">Breaking News 3</h2>
+        <div class="news-meta">Published: June 3, 2023</div>
+        <div class="news-views">Views: 2000</div>
+      </div>
+      <div class="news">
+        <img class="news-image" src="/news1.jpeg" alt="News 4 Image">
+        <h2 class="news-headline">Breaking News 4</h2>
+        <div class="news-meta">Published: June 4, 2023</div>
+        <div class="news-views">Views: 1200</div>
+      </div>
+      <div class="news">
+        <img class="news-image" src="/news1.jpeg" alt="News 5 Image">
+        <h2 class="news-headline">Breaking News 5</h2>
+        <div class="news-meta">Published: June 5, 2023</div>
+        <div class="news-views">Views: 1800</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var carousel = document.querySelector('.carousel-container');
+    var isDragging = false;
+    var startPos = 0;
+    var currentTranslate = 0;
+    var prevTranslate = 0;
+
+    carousel.addEventListener('touchstart', touchStart);
+    carousel.addEventListener('touchmove', touchMove);
+    carousel.addEventListener('touchend', touchEnd);
+    carousel.addEventListener('touchcancel', touchEnd);
+
+    function touchStart(event) {
+      startPos = event.touches[0].clientX;
+      isDragging = true;
+    }
+
+    function touchMove(event) {
+      if (!isDragging) return;
+      var currentPosition = event.touches[0].clientX;
+      var diff = currentPosition - startPos;
+      currentTranslate = prevTranslate + diff;
+    }
+
+    function touchEnd() {
+      prevTranslate = currentTranslate;
+      isDragging = false;
+    }
+
+    carousel.addEventListener('mousedown', mouseDown);
+    carousel.addEventListener('mousemove', mouseMove);
+    carousel.addEventListener('mouseup', mouseUp);
+    carousel.addEventListener('mouseleave', mouseUp);
+
+    function mouseDown(event) {
+      startPos = event.clientX;
+      isDragging = true;
+    }
+
+    function mouseMove(event) {
+      if (!isDragging) return;
+      var currentPosition = event.clientX;
+      var diff = currentPosition - startPos;
+      currentTranslate = prevTranslate + diff;
+    }
+
+    function mouseUp() {
+      prevTranslate = currentTranslate;
+      isDragging = false;
+    }
+
+    function animateCarousel() {
+      requestAnimationFrame(animateCarousel);
+      carousel.style.transform = `translateX(${currentTranslate}px)`;
+    }
+
+    animateCarousel();
+  </script>
+</body>
+</html>
